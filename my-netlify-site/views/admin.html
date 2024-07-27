@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Page</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Upload a Picture and Text</h1>
+    <a href="/">go to index</a>
+    <form id="uploadForm" enctype="multipart/form-data">
+      <div>
+        <label for="image">Select Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+      </div>
+      <div>
+        <label for="text">Enter Text:</label>
+        <textarea id="text" name="text" required></textarea>
+      </div>
+      <button type="submit">Upload</button>
+    </form>
+    <div id="message"></div>
+  </div>
+
+  <script>
+    document.getElementById('uploadForm').onsubmit = async function(event) {
+      event.preventDefault();
+      
+      const formData = new FormData();
+      formData.append('image', document.getElementById('image').files[0]);
+      formData.append('text', document.getElementById('text').value);
+
+      const response = await fetch('/upload', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        document.getElementById('message').innerText = 'Upload successful!';
+        document.getElementById('uploadForm').reset();
+      } else {
+        document.getElementById('message').innerText = 'Upload failed!';
+      }
+    };
+  </script>
+</body>
+</html>

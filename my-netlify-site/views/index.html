@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Page</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Uploaded Pictures and Texts</h1>
+    <a href="/admin">go to admin</a>
+    <div id="uploads"></div>
+  </div>
+
+  <script>
+    async function loadUploads() {
+      const response = await fetch('/uploads');
+      const uploads = await response.json();
+      const uploadsContainer = document.getElementById('uploads');
+
+      uploads.forEach(upload => {
+        const div = document.createElement('div');
+        div.innerHTML = `
+          <img src="${upload.imageUrl}" alt="Upload">
+          <p>${upload.text}</p>
+        `;
+        uploadsContainer.appendChild(div);
+      });
+    }
+
+    window.onload = loadUploads;
+  </script>
+</body>
+</html>
